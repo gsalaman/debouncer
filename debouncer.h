@@ -1,6 +1,25 @@
 #ifndef ARDUINO_H
 #define ARDUINO_H
-
+/*============================================================================
+ * DEBOUNCER LIBRARY
+ *
+ * This library provides a simple method to debounce a pin in software.
+ *
+ * USAGE: 
+ *   First, create debouncer object for the pin in question.  You can optionally
+ *   specify a debounce time...if none is provided, 50 ms is used.
+ *
+ *   Instead of doing digitalReads from the pin, you can then use the "read" 
+ *   method in order to read the pin in question.
+ *
+ * NOTES:
+ *   This library uses millis() for timing.
+ *   It assumes that reads happen much faster than the debounce time.
+ *   the "debug" method will turn on and off debug information via the 
+ *   serial port.  It assumes that you have initialized that port seperately.
+ *
+ * For more information, see the associated wiki in github.
+ *===========================================================================*/   
 #include <Arduino.h>
 
 typedef enum
