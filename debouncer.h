@@ -1,5 +1,5 @@
-#ifndef ARDUINO_H
-#define ARDUINO_H
+#ifndef DEBOUNCER_H
+#define DEBOUNCER_H
 /*============================================================================
  * DEBOUNCER LIBRARY
  *
@@ -37,6 +37,7 @@ class Debouncer
     Debouncer(int pin, int debounceTime);
     void debug(bool on);
     int read( void );
+    int getNumBounces( void );
   private:
     bool               _debug;
     _debounceStateType _state;  
@@ -45,6 +46,7 @@ class Debouncer
     int                _consecutiveReads;
     int                _pin;
     void               _init(int pin, int debounceTime);
+    int                _numBounces;
 };
 
-#endif // ARDUINO_H
+#endif // DEBOUNCER_H

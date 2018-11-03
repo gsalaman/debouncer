@@ -19,9 +19,14 @@
  *
  * For more info, see the associated wiki in github.
  *===========================================================================*/   
+#include <Arduino.h>
 #include "debouncer.h"
 
 #define DEFAULT_DEBOUNCE_TIME 50  // in ms;
+
+// to avoid rollover and to conserve any LCD space, this is the maximum 
+// number of bounces we'll count
+#define MAX_BOUNCES 999 
 
 /*========================================================================
  * INTERNAL METHOD: _init
@@ -43,6 +48,7 @@ void Debouncer::_init(int pin, int debounceTime)
   _debounceTime = debounceTime;
   _consecutiveReads = 0;
   _debug = false;
+  _numBounces = 0;
 
   currentPinVal = digitalRead(_pin);
   
@@ -54,6 +60,7 @@ void Debouncer::_init(int pin, int debounceTime)
   {
     _state = PIN_LOW;
   }
+
 }  // end of _init
 
 /*=========================================================================
@@ -196,6 +203,13 @@ int Debouncer::read( void )
           Serial.println("  Staying HIGH");
         }
 
+	// Count the number of times we've bounced for debugging purposes
+	// Cap out at MAX_BOUNCES to avoid rollover.
+	if (_numBounces < MAX_BOUNCES)
+	{
+	  _numBounces++;
+	}
+
         filteredRead = HIGH;
         _state = PIN_HIGH;
       }
@@ -245,6 +259,13 @@ int Debouncer::read( void )
           Serial.println("  Staying LOW");
         }
 
+	// Count the number of times we've bounced for debugging purposes
+	// Cap out at MAX_BOUNCES to avoid rollover.
+	if (_numBounces < MAX_BOUNCES)
+	{
+	  _numBounces++;
+	}
+
         filteredRead = 0;
         _state = PIN_LOW;
       }
@@ -254,3 +275,14 @@ int Debouncer::read( void )
   return filteredRead;
   
 }  // end of read
+
+/*=========================================================================
+ * PUBLIC METHOD:  getNumBounces 
+ *
+ * This function returns the number of times our debouncer has actually
+ * "bounced" per power up.  We cap out at MAX_BOUNCES.
+ *=======================================================================*/
+int Debouncer::getNumBounces( void )
+{
+  return _numBounces;
+}
