@@ -33,8 +33,8 @@ typedef enum
 class Debouncer
 {
   public:
-    Debouncer(int pin);
-    Debouncer(int pin, int debounceTime);
+    Debouncer(int pin, int initialState);
+    Debouncer(int pin, int initialState, int debounceTime);
     void debug(bool on);
     int read( void );
     int getNumBounces( void );
@@ -45,7 +45,7 @@ class Debouncer
     unsigned long      _transitionStart;
     int                _consecutiveReads;
     int                _pin;
-    void               _init(int pin, int debounceTime);
+    void               _init(int pin, int initialState, int debounceTime);
     int                _numBounces;
 };
 

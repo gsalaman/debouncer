@@ -24,8 +24,7 @@
 
 #define DEFAULT_DEBOUNCE_TIME 50  // in ms;
 
-// to avoid rollover and to conserve any LCD space, this is the maximum 
-// number of bounces we'll count
+// to avoid rollover, this is the maximum number of bounces we'll count
 #define MAX_BOUNCES 999 
 
 /*========================================================================
@@ -40,19 +39,15 @@
  *
  *   debounceTime - debounce time, in MS
  *======================================================================*/
-void Debouncer::_init(int pin, int debounceTime)
+void Debouncer::_init(int pin, int initialState, int debounceTime)
 {
-  int currentPinVal;
-  
   _pin = pin;
   _debounceTime = debounceTime;
   _consecutiveReads = 0;
   _debug = false;
   _numBounces = 0;
 
-  currentPinVal = digitalRead(_pin);
-  
-  if (currentPinVal == HIGH)
+  if (initialState == HIGH)
   {
     _state = PIN_HIGH;
   }
@@ -64,25 +59,25 @@ void Debouncer::_init(int pin, int debounceTime)
 }  // end of _init
 
 /*=========================================================================
- * CONSTRUCTOR:  Debouncer(pin)
+ * CONSTRUCTOR:  Debouncer(pin, initialState)
  *
  * This function sets up the debouncer object for the specified pin, 
  * using the default debounce time.
  *=======================================================================*/
-Debouncer::Debouncer(int pin)
+Debouncer::Debouncer(int pin, int initialState)
 {
-  _init(pin, DEFAULT_DEBOUNCE_TIME);
+  _init(pin, initialState, DEFAULT_DEBOUNCE_TIME);
 }
 
 /*=========================================================================
- * CONSTRUCTOR:  Debouncer(pin, debounceTime)
+ * CONSTRUCTOR:  Debouncer(pin, initialState, debounceTime)
  *
  * This function sets up the debouncer object for the specified pin, 
  * using the specified debounce time.
  *=======================================================================*/
-Debouncer::Debouncer(int pin, int debounceTime)
+Debouncer::Debouncer(int pin, int initialState, int debounceTime)
 {
-  _init(pin, debounceTime);
+  _init(pin, initialState, debounceTime);
 }
 
 /*=========================================================================
